@@ -1789,43 +1789,330 @@ def chatbot_page():
         </script>
         """, unsafe_allow_html=True)
 
+# Custom CSS for sidebar
+st.markdown("""
+<style>
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #4a6bff, #6a11cb);
+        color: white;
+        padding: 1.5rem 1rem;
+    }
+    
+    /* Sidebar header */
+    [data-testid="stSidebar"] .stImage {
+        margin-bottom: 1.5rem;
+    }
+    
+    
+    
+    [data-testid="stSidebar"] .stButton>button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(5px);
+    }
+    
+    /* Active page button */
+    [data-testid="stSidebar"] .stButton>button[aria-pressed="true"] {
+        background: white !important;
+        color: #4a6bff !important;
+        font-weight: bold;
+    }
+    
+    /* Divider */
+    .sidebar-divider {
+        margin: 1.5rem 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Contact section */
+    .sidebar-contact {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+    }
+    
+    .sidebar-contact a {
+        color: white !important;
+        text-decoration: none;
+    }
+    
+    .sidebar-contact a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Footer */
+    .sidebar-footer {
+        margin-top: 2rem;
+        font-size: 0.8rem;
+        text-align: center;
+        opacity: 0.8;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 def main():
+    # Initialize session state
     if 'page' not in st.session_state:
         st.session_state.page = "About"
     if 'theme' not in st.session_state:
-        st.session_state.theme = 'light'  # Set default to light mode
+        st.session_state.theme = 'light'
     
     load_css(st.session_state.theme)
     
-    with st.sidebar:
-        st.image("images/logo1.png", use_container_width=True)
-        st.markdown("---")
+    # Add custom CSS for sidebar
+    st.markdown("""
+    <style>
+        /* Sidebar styling */
+        section[data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #4a6bff, #6a11cb);
+            color: white;
+            padding: 1rem;
+            position: relative;
+        }
         
+        /* Close button styling - always visible on mobile */
+        .sidebar-close-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-close-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+        
+        /* Show close button only when sidebar is active on mobile */
+        @media (min-width: 768px) {
+            .sidebar-close-btn {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar-close-btn {
+                display: flex;
+                opacity: 1;
+                pointer-events: auto;
+                transition: all 0.3s ease;
+            }
+            
+            /* Hide when sidebar is closed */
+            section[data-testid="stSidebar"]:not(.active) + .sidebar-close-btn {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            /* Make sidebar full width on mobile */
+            section[data-testid="stSidebar"] {
+                position: fixed !important;
+                width: 280px !important;
+                height: 100% !important;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            /* Show sidebar when active */
+            section[data-testid="stSidebar"].active {
+                transform: translateX(0);
+            }
+            
+            /* Overlay when sidebar is open */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+            }
+            
+            /* Show overlay when sidebar is open */
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+        
+        /* Sidebar content styling */
+        .sidebar-content {
+            padding-top: 20px;
+        }
+        
+       
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Add JavaScript for sidebar toggle
+    st.markdown("""
+    
+    """, unsafe_allow_html=True)
+    
+    # Sidebar content
+    # Simple and reliable sidebar toggle
+    st.markdown("""
+    <script>
+    function setupSidebar() {
+        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
+        const toggleBtn = document.querySelector('[data-testid="stSidebarToggleButton"]');
+        
+        if (!sidebar || !toggleBtn) {
+            setTimeout(setupSidebar, 100);
+            return;
+        }
+        
+        // Create overlay
+        let overlay = document.querySelector('.sidebar-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+            
+            overlay.onclick = function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+        }
+        
+        // Toggle function
+        function toggleSidebar() {
+            const isActive = sidebar.classList.contains('active');
+            
+            if (isActive) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Reset on desktop
+        function handleResize() {
+            if (window.innerWidth > 768) {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+                sidebar.style.transform = '';
+                sidebar.classList.remove('active');
+            }
+        }
+        
+        // Set up event listeners
+        toggleBtn.onclick = function(e) {
+            e.stopPropagation();
+            toggleSidebar();
+            return false;
+        };
+        
+        // Close on mobile nav click
+        document.querySelectorAll('[data-testid="stSidebar"] .stButton > button').forEach(btn => {
+            btn.onclick = function() {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            };
+        });
+        
+        // Close on scroll (mobile)
+        let lastScroll = 0;
+        window.onscroll = function() {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                if (Math.abs(currentScroll - lastScroll) > 10) {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+            }
+        };
+        
+        // Handle resize
+        window.onresize = handleResize;
+    }
+    
+    // Initialize
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupSidebar);
+    } else {
+        setupSidebar();
+    }
+    
+    // Re-initialize on navigation
+    document.addEventListener('streamlit:navigation', setupSidebar);
+    </script>
+    """, unsafe_allow_html=True)
+    
+    with st.sidebar:
+        st.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
+        st.image("images/logo1.png", use_container_width=True)
+        
+        # Theme Toggle
         current_theme = st.session_state.theme
         button_label = "☀️ Light Mode" if current_theme == "dark" else "🌙 Dark Mode"
-        if st.button(button_label, use_container_width=True, key="theme_toggle"):
+        if st.button(button_label, use_container_width=True, key="theme_toggle_btn"):
             st.session_state.theme = "light" if current_theme == "dark" else "dark"
             st.rerun()
         
-        st.markdown("---")
+        st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
         
-        if st.button("🏠 About", use_container_width=True):
-            st.session_state.page = "About"
-        if st.button("💼 Portfolio", use_container_width=True):
-            st.session_state.page = "Portfolio"
-        if st.button("📄 Resume", use_container_width=True):
-            st.session_state.page = "Resume"
-        if st.button("📧 Contacts", use_container_width=True):
-            st.session_state.page = "Contacts"
-        if st.button("🤖 AI Chatbot", use_container_width=True):
-            st.session_state.page = "Chatbot"
+        # Navigation Buttons
+        pages = [
+            ("🏠 About", "About"),
+            ("💼 Portfolio", "Portfolio"),
+            ("📄 Resume", "Resume"),
+            ("📧 Contacts", "Contacts"),
+            ("🤖 AI Chatbot", "Chatbot")
+        ]
         
-        st.markdown("---")
-        st.markdown("### 📞 Quick Contact")
-        st.markdown("**Email**: [humzahanif786@gmail.com](mailto:humzahanif786@gmail.com)")
-        st.markdown("**Phone**: [+92 345 2275566](tel:+923452275566)")
-        st.markdown("---")
-        st.markdown(f"© {datetime.now().year} Hamza Hanif")
+        for icon, page in pages:
+            if st.button(icon + " " + page, 
+                        key=f"nav_{page}",
+                        type="primary" if st.session_state.page == page else "secondary",
+                        use_container_width=True):
+                st.session_state.page = page
+                st.rerun()
+        
+        # Contact Section
+        st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
+        st.markdown('''
+        <div class="sidebar-contact">
+            <h3>📞 Quick Contact</h3>
+            <p>✉️ <a href="mailto:humzahanif786@gmail.com">humzahanif786@gmail.com</a></p>
+            <p>📱 <a href="tel:+923452275566">+92 345 2275566</a></p>
+        </div>
+        ''', unsafe_allow_html=True)
+        
+        # Footer
+        st.markdown(f'''
+        <div class="sidebar-footer">
+            <div class="sidebar-divider"></div>
+            <p>© {datetime.now().year} Hamza Hanif</p>
+        </div>
+        ''', unsafe_allow_html=True)
     
     if st.session_state.page == "About":
         home_page()
