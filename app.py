@@ -43,6 +43,8 @@ def load_css(theme='dark'):
     <style>
     @import url('https://fonts.googleapis.com/css2?family=BenchNine:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&display=swap');
     
+
+    
     /* Main app background */
     .stApp {{
         background-color: {bg_color} !important;
@@ -700,7 +702,7 @@ def resume_page():
         }}
         .project-name {{
             font-weight: 600;
-            color: {text_color1};
+            color: {heading_color};
             margin-bottom: 0.5rem;
         }}
         .project-name a {{
@@ -1794,6 +1796,86 @@ st.markdown("""
 <style>
     /* Sidebar styling */
     [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
+        padding: 2rem 1rem;
+    }
+    
+    .sidebar .sidebar-content {
+        width: 250px !important;
+    }
+    
+    .sidebar .sidebar-content .block-container {
+        padding: 0;
+    }
+    
+    .sidebar .sidebar-content .stRadio > div {
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .sidebar .sidebar-content .stRadio label {
+        margin: 0;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar .sidebar-content .stRadio label:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar .sidebar-content .stRadio [data-baseweb="radio"] {
+        margin: 0;
+    }
+    
+    .sidebar .sidebar-content .stRadio [data-baseweb="radio"] div:first-child {
+        width: 1rem;
+        height: 1rem;
+    }
+    
+    .sidebar .sidebar-content .stRadio [data-baseweb="radio"] div:last-child {
+        display: none;
+    }
+    
+    .sidebar .sidebar-content .stRadio [data-baseweb="radio"]:has(input:checked) + label {
+        background: #4a90e2;
+        color: white;
+    }
+    
+    .sidebar .sidebar-content .stButton button {
+        width: 100%;
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        font-weight: 500;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar .sidebar-content .stButton button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .sidebar .sidebar-content .stButton button:active {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .sidebar .sidebar-content .stButton button[data-testid="baseButton-secondary"] {
+        background: #4a90e2;
+        border-color: #4a90e2;
+    }
+    
+    .sidebar .sidebar-content .stButton button[data-testid="baseButton-secondary"]:hover {
+        background: #3a7bc8;
+        border-color: #3a7bc8;
+    }
+    [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #4a6bff, #6a11cb);
         color: white;
         padding: 1.5rem 1rem;
@@ -1848,9 +1930,9 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+# Replace the sidebar section in your main() function with this:
 
 def main():
-    # Initialize session state
     if 'page' not in st.session_state:
         st.session_state.page = "About"
     if 'theme' not in st.session_state:
@@ -1858,272 +1940,53 @@ def main():
     
     load_css(st.session_state.theme)
     
-    # Add custom CSS for sidebar
-    st.markdown("""
-    <style>
-        /* Sidebar styling */
-        section[data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #4a6bff, #6a11cb);
-            color: white;
-            padding: 1rem;
-            position: relative;
-        }
-        
-        /* Close button styling - always visible on mobile */
-        .sidebar-close-btn {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .sidebar-close-btn:hover {
-            background: rgba(0, 0, 0, 0.8);
-            transform: scale(1.1);
-        }
-        
-        /* Show close button only when sidebar is active on mobile */
-        @media (min-width: 768px) {
-            .sidebar-close-btn {
-                display: none;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar-close-btn {
-                display: flex;
-                opacity: 1;
-                pointer-events: auto;
-                transition: all 0.3s ease;
-            }
-            
-            /* Hide when sidebar is closed */
-            section[data-testid="stSidebar"]:not(.active) + .sidebar-close-btn {
-                opacity: 0;
-                pointer-events: none;
-            }
-        }
-        
-        /* Mobile styles */
-        @media (max-width: 768px) {
-            /* Make sidebar full width on mobile */
-            section[data-testid="stSidebar"] {
-                position: fixed !important;
-                width: 280px !important;
-                height: 100% !important;
-                z-index: 1000;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-            
-            /* Show sidebar when active */
-            section[data-testid="stSidebar"].active {
-                transform: translateX(0);
-            }
-            
-            /* Overlay when sidebar is open */
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-            }
-            
-            /* Show overlay when sidebar is open */
-            .sidebar-overlay.active {
-                display: block;
-            }
-        }
-        
-        /* Sidebar content styling */
-        .sidebar-content {
-            padding-top: 20px;
-        }
-        
-       
-    </style>
-    """, unsafe_allow_html=True)
-    
-    # Add JavaScript for sidebar toggle
-    st.markdown("""
-    
-    """, unsafe_allow_html=True)
-    
-    # Sidebar content
-    # Simple and reliable sidebar toggle
-    st.markdown("""
-    <script>
-    function setupSidebar() {
-        const sidebar = document.querySelector('section[data-testid="stSidebar"]');
-        const toggleBtn = document.querySelector('[data-testid="stSidebarToggleButton"]');
-        
-        if (!sidebar || !toggleBtn) {
-            setTimeout(setupSidebar, 100);
-            return;
-        }
-        
-        // Create overlay
-        let overlay = document.querySelector('.sidebar-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.className = 'sidebar-overlay';
-            document.body.appendChild(overlay);
-            
-            overlay.onclick = function() {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            };
-        }
-        
-        // Toggle function
-        function toggleSidebar() {
-            const isActive = sidebar.classList.contains('active');
-            
-            if (isActive) {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                sidebar.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-        
-        // Reset on desktop
-        function handleResize() {
-            if (window.innerWidth > 768) {
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-                sidebar.style.transform = '';
-                sidebar.classList.remove('active');
-            }
-        }
-        
-        // Set up event listeners
-        toggleBtn.onclick = function(e) {
-            e.stopPropagation();
-            toggleSidebar();
-            return false;
-        };
-        
-        // Close on mobile nav click
-        document.querySelectorAll('[data-testid="stSidebar"] .stButton > button').forEach(btn => {
-            btn.onclick = function() {
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            };
-        });
-        
-        // Close on scroll (mobile)
-        let lastScroll = 0;
-        window.onscroll = function() {
-            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
-                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-                if (Math.abs(currentScroll - lastScroll) > 10) {
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-                lastScroll = currentScroll <= 0 ? 0 : currentScroll;
-            }
-        };
-        
-        // Handle resize
-        window.onresize = handleResize;
-    }
-    
-    // Initialize
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', setupSidebar);
-    } else {
-        setupSidebar();
-    }
-    
-    // Re-initialize on navigation
-    document.addEventListener('streamlit:navigation', setupSidebar);
-    </script>
-    """, unsafe_allow_html=True)
-    
     with st.sidebar:
-        st.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
+        # Logo and theme toggle
         st.image("images/logo1.png", use_container_width=True)
         
-        # Theme Toggle
+        # Theme toggle button
         current_theme = st.session_state.theme
-        button_label = "☀️ Light Mode" if current_theme == "dark" else "🌙 Dark Mode"
-        if st.button(button_label, use_container_width=True, key="theme_toggle_btn"):
+        theme_icon = "🌙" if current_theme == "light" else "☀️"
+        if st.button(f"{theme_icon} {'Dark' if current_theme == 'light' else 'Light'} Mode", 
+                    use_container_width=True, 
+                    key="theme_toggle"):
             st.session_state.theme = "light" if current_theme == "dark" else "dark"
             st.rerun()
         
-        st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
+        st.markdown("---")
         
-        # Navigation Buttons
-        pages = [
-            ("🏠 About", "About"),
-            ("💼 Portfolio", "Portfolio"),
-            ("📄 Resume", "Resume"),
-            ("📧 Contacts", "Contacts"),
-            ("🤖 AI Chatbot", "Chatbot")
+        # Navigation buttons
+        nav_items = [
+            ("About", "🏠"),
+            ("Portfolio", "💼"),
+            ("Resume", "📄"),
+            ("Contacts", "📧"),
+            ("AI Chatbot", "🤖")
         ]
         
-        for icon, page in pages:
-            if st.button(icon + " " + page, 
-                        key=f"nav_{page}",
-                        type="primary" if st.session_state.page == page else "secondary",
-                        use_container_width=True):
+        # Add navigation items
+        for page, icon in nav_items:
+            if st.button(f"{icon} {page}", use_container_width=True, key=f"nav_{page}"):
                 st.session_state.page = page
                 st.rerun()
         
-        # Contact Section
-        st.markdown('<div class="sidebar-divider"></div>', unsafe_allow_html=True)
-        st.markdown('''
-        <div class="sidebar-contact">
-            <h3>📞 Quick Contact</h3>
-            <p>✉️ <a href="mailto:humzahanif786@gmail.com">humzahanif786@gmail.com</a></p>
-            <p>📱 <a href="tel:+923452275566">+92 345 2275566</a></p>
-        </div>
-        ''', unsafe_allow_html=True)
-        
-        # Footer
-        st.markdown(f'''
-        <div class="sidebar-footer">
-            <div class="sidebar-divider"></div>
-            <p>© {datetime.now().year} Hamza Hanif</p>
-        </div>
-        ''', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
     
-    if st.session_state.page == "About":
+    # Page routing
+    current_page = st.session_state.get('current_page', 'home')
+    
+    if current_page == 'home':
         home_page()
-    elif st.session_state.page == "Portfolio":
+    elif current_page == 'portfolio':
         portfolio_page()
-    elif st.session_state.page == "Resume":
+    elif current_page == 'resume':
         resume_page()
-    elif st.session_state.page == "Contacts":
+    elif current_page == 'contact':
         contacts_page()
-    elif st.session_state.page == "Chatbot":
+    elif current_page == 'ai chatbot':
         chatbot_page()
+    else:
+        home_page()
     
     st.markdown("---")
     st.markdown("""
