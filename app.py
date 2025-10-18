@@ -1972,18 +1972,16 @@ def main():
         
         st.markdown("</div>", unsafe_allow_html=True)
     
-    # Page routing
-    current_page = st.session_state.get('current_page', 'home')
-    
-    if current_page == 'home':
+    # Page routing - use st.session_state.page instead of current_page
+    if st.session_state.page == "About":
         home_page()
-    elif current_page == 'portfolio':
+    elif st.session_state.page == "Portfolio":
         portfolio_page()
-    elif current_page == 'resume':
+    elif st.session_state.page == "Resume":
         resume_page()
-    elif current_page == 'contact':
+    elif st.session_state.page == "Contacts":
         contacts_page()
-    elif current_page == 'ai chatbot':
+    elif st.session_state.page == "AI Chatbot":
         chatbot_page()
     else:
         home_page()
