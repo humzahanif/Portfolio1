@@ -1791,203 +1791,181 @@ def chatbot_page():
         </script>
         """, unsafe_allow_html=True)
 
-# Custom CSS for sidebar
+# Add this CSS for the new header layout
 st.markdown("""
 <style>
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
-        padding: 2rem 1rem;
+    /* Header container */
+    .header-container {
+        padding: 1rem;
+        margin-bottom: 2rem;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    .sidebar .sidebar-content {
-        width: 250px !important;
-    }
-    
-    .sidebar .sidebar-content .block-container {
-        padding: 0;
-    }
-    
-    .sidebar .sidebar-content .stRadio > div {
-        flex-direction: row;
-        justify-content: center;
+    /* Logo and navigation container */
+    .nav-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         gap: 1rem;
-        margin: 1rem 0;
+        max-width: 1200px;
+        margin: 0 auto;
     }
     
-    .sidebar .sidebar-content .stRadio label {
-        margin: 0;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-    }
-    
-    .sidebar .sidebar-content .stRadio label:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .sidebar .sidebar-content .stRadio [data-baseweb="radio"] {
-        margin: 0;
-    }
-    
-    .sidebar .sidebar-content .stRadio [data-baseweb="radio"] div:first-child {
-        width: 1rem;
-        height: 1rem;
-    }
-    
-    .sidebar .sidebar-content .stRadio [data-baseweb="radio"] div:last-child {
-        display: none;
-    }
-    
-    .sidebar .sidebar-content .stRadio [data-baseweb="radio"]:has(input:checked) + label {
-        background: #4a90e2;
-        color: white;
-    }
-    
-    .sidebar .sidebar-content .stButton button {
-        width: 100%;
-        border-radius: 8px;
-        padding: 0.75rem;
-        margin: 0.5rem 0;
-        font-weight: 500;
-        text-align: left;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        transition: all 0.3s ease;
-    }
-    
-    .sidebar .sidebar-content .stButton button:hover {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-    
-    .sidebar .sidebar-content .stButton button:active {
-        background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .sidebar .sidebar-content .stButton button[data-testid="baseButton-secondary"] {
-        background: #4a90e2;
-        border-color: #4a90e2;
-    }
-    
-    .sidebar .sidebar-content .stButton button[data-testid="baseButton-secondary"]:hover {
-        background: #3a7bc8;
-        border-color: #3a7bc8;
-    }
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #4a6bff, #6a11cb);
-        color: white;
-        padding: 1.5rem 1rem;
-    }
-    
-    /* Sidebar header */
-    [data-testid="stSidebar"] .stImage {
-        margin-bottom: 1.5rem;
-    }
-    
-    
-    
-    [data-testid="stSidebar"] .stButton>button:hover {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateX(5px);
-    }
-    
-    /* Active page button */
-    [data-testid="stSidebar"] .stButton>button[aria-pressed="true"] {
-        background: white !important;
-        color: #4a6bff !important;
-        font-weight: bold;
-    }
-    
-    /* Divider */
-    .sidebar-divider {
-        margin: 1.5rem 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    /* Contact section */
-    .sidebar-contact {
-        margin-top: 2rem;
-        font-size: 0.9rem;
-    }
-    
-    .sidebar-contact a {
-        color: white !important;
-        text-decoration: none;
-    }
-    
-    .sidebar-contact a:hover {
-        text-decoration: underline;
-    }
-    
-    /* Footer */
-    .sidebar-footer {
-        margin-top: 2rem;
-        font-size: 0.8rem;
+    /* Logo styles */
+    .logo-container {
         text-align: center;
-        opacity: 0.8;
+        margin-bottom: 1rem;
+    }
+    
+    .logo-container img {
+        height: 60px;
+        width: auto;
+    }
+    
+    /* Navigation buttons container */
+    .nav-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    /* Button styles */
+    .nav-button {
+        background: transparent;
+        border: 2px solid #0000ff;
+        color: #0000ff;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .nav-button:hover {
+        background: #0000ff;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .nav-button.active {
+        background: #0000ff;
+        color: white;
+    }
+    
+    /* DateTime and User info */
+    .info-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .user-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 """, unsafe_allow_html=True)
-# Replace the sidebar section in your main() function with this:
 
+# Replace the sidebar and navigation code in your main() function with this:
 def main():
+    # Info bar with datetime and user
+    st.markdown(f"""
+    <div class="info-bar">
+        <span>🕒 UTC: 2025-10-18 14:48:58</span>
+        <div class="user-info">
+            <div class="user-avatar">👤</div>
+            <span>@humzahanif</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Header with logo and navigation
+    st.markdown("""
+    <div class="header-container">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="images/logo1.png" alt="Logo">
+            </div>
+            <div class="nav-buttons">
+                <a href="#" class="nav-button active">🏠 About</a>
+                <a href="#" class="nav-button">💼 Portfolio</a>
+                <a href="#" class="nav-button">📄 Resume</a>
+                <a href="#" class="nav-button">📧 Contacts</a>
+                <a href="#" class="nav-button">🤖 AI Chatbot</a>
+                <a href="#" class="nav-button">🌙 Dark Mode</a>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Initialize page state if not exists
     if 'page' not in st.session_state:
         st.session_state.page = "About"
     if 'theme' not in st.session_state:
         st.session_state.theme = 'light'
     
-    load_css(st.session_state.theme)
+    # Create columns for navigation buttons
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     
-    with st.sidebar:
-        # Logo and theme toggle
-        st.image("images/logo1.png", use_container_width=True)
-        
-        # Theme toggle button
-        current_theme = st.session_state.theme
-        theme_icon = "🌙" if current_theme == "light" else "☀️"
-        if st.button(f"{theme_icon} {'Dark' if current_theme == 'light' else 'Light'} Mode", 
-                    use_container_width=True, 
-                    key="theme_toggle"):
-            st.session_state.theme = "light" if current_theme == "dark" else "dark"
-            st.rerun()
-        
-        st.markdown("---")
-        
-        # Navigation buttons
-        nav_items = [
-            ("About", "🏠"),
-            ("Portfolio", "💼"),
-            ("Resume", "📄"),
-            ("Contacts", "📧"),
-            ("AI Chatbot", "🤖")
-        ]
-        
-        # Add navigation items
-        for page, icon in nav_items:
-            if st.button(f"{icon} {page}", use_container_width=True, key=f"nav_{page}"):
+    # Navigation buttons
+    nav_items = {
+        "About": ("🏠", col1),
+        "Portfolio": ("💼", col2),
+        "Resume": ("📄", col3),
+        "Contacts": ("📧", col4),
+        "AI Chatbot": ("🤖", col5)
+    }
+    
+    # Add navigation buttons
+    for page, (icon, col) in nav_items.items():
+        with col:
+            if st.button(f"{icon} {page}", key=f"nav_{page}", use_container_width=True):
                 st.session_state.page = page
                 st.rerun()
-        
-        st.markdown("</div>", unsafe_allow_html=True)
     
-    # Page routing
-    current_page = st.session_state.get('current_page', 'home')
+    # Theme toggle in the last column
+    with col6:
+        current_theme = st.session_state.theme
+        theme_icon = "🌙" if current_theme == "light" else "☀️"
+        if st.button(f"{theme_icon} {'Dark' if current_theme == 'light' else 'Light'}", 
+                    key="theme_toggle", 
+                    use_container_width=True):
+            st.session_state.theme = "light" if current_theme == "dark" else "dark"
+            st.rerun()
     
-    if current_page == 'home':
+    # Page content based on selection
+    if st.session_state.page == "About":
         home_page()
-    elif current_page == 'portfolio':
+    elif st.session_state.page == "Portfolio":
         portfolio_page()
-    elif current_page == 'resume':
+    elif st.session_state.page == "Resume":
         resume_page()
-    elif current_page == 'contact':
+    elif st.session_state.page == "Contacts":
         contacts_page()
-    elif current_page == 'ai chatbot':
+    elif st.session_state.page == "AI Chatbot":
         chatbot_page()
-    else:
-        home_page()
     
+    # Footer
     st.markdown("---")
     st.markdown("""
     <div class="footer">
